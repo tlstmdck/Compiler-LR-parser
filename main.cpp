@@ -12,6 +12,13 @@ struct state
 };
 vector<string> non_terminal;
 vector<string> terminal;
+char first[30][30];
+bool is_non_terminal(char ch){
+    if((int)ch > 64 && (int)ch < 91)
+        return true;
+    else
+        return false;
+}
 void find_branch(struct state *I, int index, int i){
     string left = I->products[index][0];
     I->products[index+1].push_back(left);
@@ -25,7 +32,7 @@ void find_branch(struct state *I, int index, int i){
     I->products[index].pop_back();
     I->products_count++;
     for(int i=0; i<I->products[I->products_count].size(); i++){
-        if ((int)I->products[I->products_count][i][0] > 64 && (int)I->products[I->products_count][i][0] < 91)
+        if (is_non_terminal(I->products[I->products_count][i][0]))
             {
                 non_terminal.push_back(I->products[I->products_count][i]);
             }
@@ -61,7 +68,7 @@ void state_setting(struct state *I)
             I->products[index].push_back(stringbuffer);
         }
         for(int i=0; i<I->products[index].size(); i++){
-            if ((int)I->products[index][i][0] > 64 && (int)I->products[index][i][0] < 91)
+            if (is_non_terminal(I->products[I->products_count][i][0]))
             {
                 non_terminal.push_back(I->products[index][i]);
             }
@@ -87,8 +94,17 @@ void state_setting(struct state *I)
     terminal.erase(unique(terminal.begin(), terminal.end()),terminal.end());
 }
 
-void get_first()
+void get_first(struct state *I)
 {
+    for(int i=0; i<non_terminal.size(); i++){
+        for(int j=0; j<I->products_count; j++){
+            if(I->products[j][0] == non_terminal[i]){
+                if(!is_non_terminal(I->products[j][2][0])){
+                    
+                }
+            }
+        }
+    }
 }
 void get_follow(){
     
@@ -110,5 +126,6 @@ int main()
     for(int i=0; i<terminal.size(); i++){
         cout << terminal[i] << " ";
     }
-    
+    get_first(&init);
+    return 0;
 }
